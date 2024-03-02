@@ -14,7 +14,7 @@ namespace CalculadoraNotas
             List<Asignaturas> asignaturas = new List<Asignaturas>();
             while (true)
             {
-                Console.WriteLine("1.Agregar asignatura\n2.Elegir asignatura");
+                Console.WriteLine("1.Agregar asignatura \n 2.Elegir asignatura");
                 int opcion = int.Parse(Console.ReadLine());
                 if (opcion == 1)
                 {
@@ -32,7 +32,7 @@ namespace CalculadoraNotas
                     {
                         if (asignatura.nombre == nombreAsignatura)
                         {
-                            Console.WriteLine("1.Ver nora acomulada\n2.Ver nota deseada\n3.Agregar notas");
+                            Console.WriteLine("1.Ver nota acomulada \n 2.Ver nota deseada \n 3.Agregar notas");
                             int opcion2 = int.Parse(Console.ReadLine());
                             if (opcion2 == 3)
                             {
