@@ -28,37 +28,54 @@ namespace CalculadoraNotas
             return sumatoriaPorcentaje;
         }
 
-        private bool validarPorcentaje()
+        public bool validarPorcentaje()
         {
             return contarPorcentaje() <= 1;
         }
 
+        public override string ToString()
+        {
+            return ($"Nombre: {this.nombre}\nCreditos: {this.creditos}");
+        }
+
+        public string verNotas()
+        {
+            string sb = "";
+            sb += $"## {this.nombre} ##\n";
+            if (notas.Count > 0)
+            {
+                foreach (Nota nota in notas)
+                {
+                    sb += nota.ToString();
+                }
+            }
+            else sb += "No hay notas";
+            return sb;
+        }
+
         private double promedio()
         {
-            double sumatoriaNotas = 0;
-            double sumatoriaPorcentaje = contarPorcentaje();
+            double SumatoriaNotas = 0;
             foreach (Nota nota in notas)
             {
-                sumatoriaNotas += (nota.valor * nota.porcentaje);
+                SumatoriaNotas += (nota.valor * nota.porcentaje);
             }
-            return sumatoriaNotas / sumatoriaPorcentaje;
+            return SumatoriaNotas;
         }
 
         public double notasAcumuladas()
         {
-            if(this.notas.Count > 0)
-            return this.promedio()/this.contarPorcentaje();
-            else return 0;
+            if (this.notas.Count > 0 && this.validarPorcentaje())
+                return this.promedio() / this.contarPorcentaje();
+            else if (this.notas.Count > 0 && !this.validarPorcentaje())
+                return this.promedio();
+            return 0;
         }
 
         public double notaDeseada(double notaRequerida)
         {
-            if (notas.Count > 0)
-            {
-                if (validarPorcentaje()) return (notaRequerida - promedio()) / (1 - contarPorcentaje());
-                else return promedio();
-            }
-            else return 0;
+            if (validarPorcentaje()) return (notaRequerida - this.promedio()) / (1 - this.contarPorcentaje());
+            return this.promedio();
         }
     }
 }

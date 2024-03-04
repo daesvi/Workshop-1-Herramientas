@@ -9,87 +9,186 @@ namespace CalculadoraNotas
 {
     internal class Program
     {
-        private static List<Asignatura> asignaturas = new List<Asignatura>();
-
-        private static void agregarAsignatura()
+        static void Main(string[] args)
         {
-            Console.Write("Digita el nombre de la asignatura: ");
-            string nombre = Console.ReadLine();
-            Console.Write("Digita los créditos de la asignatura: ");
-            int creditos = int.Parse(Console.ReadLine());
-            asignaturas.Add(new Asignatura(nombre, creditos));
+            List<Asignatura> asignaturas = new List<Asignatura>();
+
+            while (true)
+            {
+                Console.Clear();
+                try
+                {
+                    Console.Write("##### Calculadora de Notas ######\n1.Agregar asignatura \n2.Elegir asignatura\n3.Salir\nDigita tu opcion: ");
+                    int opcion = int.Parse(Console.ReadLine());
+                    if (opcion == 1) agregarAsignatura(asignaturas);
+                    else if (opcion == 2)
+                    {
+                        if (asignaturas.Count > 0)
+                        {
+                            elgirAsignatura(asignaturas);
+                        }
+                        else verAsignaturas(asignaturas);
+                    }
+                    else if (opcion == 3) break;
+                    else Console.WriteLine("opcion no valida");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lo siento hubo un error de tipo: {ex.GetType()}\nIntentalo de nuevo");
+                    Console.ReadKey();
+
+                }
+            }
+        }
+        public static void agregarAsignatura(List<Asignatura> asignaturas)
+        {
+            Console.Clear();
+            try
+            {
+                Console.WriteLine("## Agregrar asignatura ##");
+                Console.Write("Digita el nombre de la asignatura: ");
+                string nombre = Console.ReadLine();
+                Console.Write("Digita los creditos de la asignatura: ");
+                int creditos = int.Parse(Console.ReadLine());
+                asignaturas.Add(new Asignatura(nombre.ToLower(), creditos));
+                Console.WriteLine("Asignatura agregada");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lo siento hubo un error de tipo: {ex.GetType()}\nIntentalo de nuevo");
+            }
+            Console.ReadKey();
         }
 
-        private static void elegirAsignatura()
+        public static void agregarNota(Asignatura asignatura)
         {
-            Console.Write("Digita el nombre de la asignatura: ");
-            string nombreAsignatura = Console.ReadLine();
+            Console.Clear();
+            Console.WriteLine("## Agregrar nota ##");
+            if (!asignatura.validarPorcentaje())
+                Console.WriteLine("El porcentaje actual de la asignatura es 100% por lo cual no puedes agregar mas notas");
+            else
+            {
+                try
+                {
+                    Console.Write("Digita el nombre de la nota: ");
+                    string nombre = Console.ReadLine();
+                    Console.Write("Digita el valor de la nota: ");
+                    double valor = double.Parse(Console.ReadLine());
+                    Console.Write("Digita el porcentaje de la nota: ");
+                    double porcentaje = double.Parse(Console.ReadLine());
+                    asignatura.notas.Add(new Nota(nombre, valor, porcentaje));
+                    Console.WriteLine("Nota agregada");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lo siento hubo un error de tipo: {ex.GetType()}\nIntentalo de nuevo");
+
+                }
+            }
+        }
+
+        public static void verNotaDeseada(Asignatura asignatura)
+        {
+            Console.Clear();
+            if (asignatura.validarPorcentaje())
+            {
+
+                Console.WriteLine("## Nota Deseada ##");
+                Console.Write("Digita la nota deseada: ");
+                double notaRequerida = double.Parse(Console.ReadLine());
+                Console.WriteLine($"necesitas sacar en el porcentaje que te queda ({(1 - asignatura.contarPorcentaje()) * 100}) un {asignatura.notaDeseada(notaRequerida)}");
+            }
+            else
+            {
+                Console.WriteLine($"Ya tienie una nota final de {asignatura.notaDeseada(0)}");
+            }
+        }
+        public static void verNotaAcomulada(Asignatura asignatura)
+        {
+            Console.Clear();
+            if (asignatura.validarPorcentaje())
+                Console.WriteLine($"## Nota acomulada ##\nLlevas acomulado un {asignatura.notasAcumuladas()}");
+            else Console.WriteLine($"## Nota acomulada ##\nTu asignatura tiene una nota final de {asignatura.notasAcumuladas()}");
+        }
+
+        public static void verAsignaturas(List<Asignatura> asignaturas)
+        {
+            Console.Clear();
+            Console.WriteLine("## Asignaturas ##");
+            if (asignaturas.Count > 0)
+            {
+                foreach (var asignatura in asignaturas)
+                {
+                    Console.WriteLine(asignatura.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("Aun no hay asignaturas Agregadas");
+                Console.ReadKey();
+            }
+        }
+
+        public static Asignatura EncontrarAsignatura(List<Asignatura> asignaturas, string nombreAsignatura)
+        {
+            Asignatura asignaturaElegida = null;
             foreach (Asignatura asignatura in asignaturas)
             {
                 if (asignatura.nombre == nombreAsignatura)
                 {
-                    mostrarMenuAsignatura(asignatura);
-                    return;
+                    asignaturaElegida = asignatura;
+                    break;
                 }
             }
-            Console.WriteLine("La asignatura no existe.");
+            return asignaturaElegida;
         }
 
-        private static void mostrarMenuAsignatura(Asignatura asignatura)
+        public static void menuAsignatura(Asignatura asignaturaElegida)
         {
-            Console.WriteLine("1. Ver nota acumulada");
-            Console.WriteLine("2. Ver nota deseada");
-            Console.WriteLine("3. Agregar notas");
-            int opcion = int.Parse(Console.ReadLine());
-            switch (opcion)
+            int opcion2 = 0;
+            while (opcion2 != 5)
             {
-                case 1:
-                    Console.WriteLine($"Llevas acumulado un {asignatura.notasAcumuladas()}");
-                    break;
-                case 2:
-                    Console.Write("Digita la nota deseada: ");
-                    double notaRequerida = double.Parse(Console.ReadLine());
-                    Console.WriteLine($"Necesitas sacar en el porcentaje que te queda ({asignatura.contarPorcentaje() * 100}) un {asignatura.notaDeseada(notaRequerida)}");
-                    break;
-                case 3:
-                    AgregarNota(asignatura);
-                    break;
-                default:
-                    Console.WriteLine("Opción no válida");
-                    break;
-            }
-        }
-
-        private static void AgregarNota(Asignatura asignatura)
-        {
-            Console.Write("Digita el nombre de la nota: ");
-            string nombre = Console.ReadLine();
-            Console.Write("Digita el valor de la nota: ");
-            double valor = double.Parse(Console.ReadLine());
-            Console.Write("Digita el porcentaje de la nota: ");
-            double porcentaje = double.Parse(Console.ReadLine());
-            asignatura.notas.Add(new Nota(nombre, valor, porcentaje));
-        }
-
-        static void Main(string[] args)
-        {
-            while (true)
-            {
-                Console.WriteLine("1. Agregar asignatura");
-                Console.WriteLine("2. Elegir asignatura");
-                int opcion = int.Parse(Console.ReadLine());
-                switch (opcion)
+                try
                 {
-                    case 1:
-                        agregarAsignatura();
-                        break;
-                    case 2:
-                        elegirAsignatura();
-                        break;
-                    default:
-                        Console.WriteLine("Opción no válida");
-                        break;
+                    Console.Write($"## {asignaturaElegida.nombre} ##\n1.Ver nota acomulada \n2.Ver nota deseada \n3.Agregar notas\n4.Ver notas\n5.Salir\nDigite una opcion: ");
+                    opcion2 = int.Parse(Console.ReadLine());
+                    if (opcion2 == 3) agregarNota(asignaturaElegida);
+                    else if (opcion2 == 2) verNotaDeseada(asignaturaElegida);
+                    else if (opcion2 == 1) verNotaAcomulada(asignaturaElegida);
+                    else if (opcion2 == 4)
+                    {
+                        Console.Clear();
+                        Console.WriteLine(asignaturaElegida.verNotas());
+                    }
+                    else if (opcion2 == 5)
+                    {
+                        Console.WriteLine("Volviendo al menu principal");
+                    }
+                    else Console.WriteLine("opcion no valida");
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Lo siento hubo un error de tipo: {ex.GetType()}\nIntentalo de nuevo");
+                }
+                Console.ReadKey();
+                Console.Clear();
+            }
+        }
+        public static void elgirAsignatura(List<Asignatura> asignaturas)
+        {
+            verAsignaturas(asignaturas);
+            Console.Write("Digita el nombre de la asignatura: ");
+            string nombreAsignatura = Console.ReadLine();
+            Asignatura asignaturaElegida = EncontrarAsignatura(asignaturas, nombreAsignatura.ToLower());
+            Console.Clear();
+            if (asignaturaElegida != null)
+            {
+                menuAsignatura(asignaturaElegida);
+            }
+            else
+            {
+                Console.WriteLine($"## {nombreAsignatura} ##\n Esta materia no ha sido creada, intenta crearla");
+                Console.ReadKey();
             }
         }
     }

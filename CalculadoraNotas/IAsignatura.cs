@@ -9,6 +9,8 @@ namespace CalculadoraNotas
     public interface IAsignatura
     {
         double contarPorcentaje();
+        bool validarPorcentaje();
+        string verNotas();
         double notasAcumuladas();
         double notaDeseada(double notaRequerida);
     }
