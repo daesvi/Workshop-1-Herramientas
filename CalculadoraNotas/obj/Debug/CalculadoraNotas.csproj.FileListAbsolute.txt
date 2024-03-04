@@ -1,0 +1,7 @@
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\bin\Debug\CalculadoraNotas.exe.config
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\bin\Debug\CalculadoraNotas.exe
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\bin\Debug\CalculadoraNotas.pdb
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\obj\Debug\CalculadoraNotas.csproj.AssemblyReference.cache
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\obj\Debug\CalculadoraNotas.csproj.CoreCompileInputs.cache
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\obj\Debug\CalculadoraNotas.exe
+C:\Users\Daniel\source\repos\CalculadoraNotas\CalculadoraNotas\obj\Debug\CalculadoraNotas.pdb

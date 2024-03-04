@@ -51,7 +51,7 @@ namespace CalculadoraNotas
             else return 0;
         }
 
-        public double NotaDeseada(double notaRequerida)
+        public double notaDeseada(double notaRequerida)
         {
             if (notas.Count > 0)
             {
