@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CalculadoraNotas
 {
-    public class Asignatura
+    public class Asignatura : IAsignatura
     {
         public string nombre { get; set; }
         public int creditos { get; set; }
