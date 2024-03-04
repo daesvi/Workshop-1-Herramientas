@@ -9,9 +9,9 @@ namespace CalculadoraNotas
     public class Nota
     {
         public string nombre {get; set;}
-        public double porcentaje {get; set; }
-        public double valor{ get; set;}
-    public Notas(string nombre, double valor, double porcentaje)
+        public double porcentaje {get; set;}
+        public double valor { get; set;}
+    public Nota(string nombre, double valor, double porcentaje)
         {
             this.nombre = nombre;
             this.valor = valor;

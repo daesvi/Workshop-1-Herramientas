@@ -6,61 +6,59 @@ using System.Threading.Tasks;
 
 namespace CalculadoraNotas
 {
-    public class Asignaturas
+    public class Asignatura
     {
         public string nombre { get; set; }
         public int creditos { get; set; }
-        public List<Notas> notas { get; set; }
-        public Asignaturas(string nombre, int creditos)
+        public List<Nota> notas { get; set; }
+        public Asignatura(string nombre, int creditos)
         {
             this.nombre = nombre;
             this.creditos = creditos;
-            this.notas = new List<Notas>();
+            this.notas = new List<Nota>();
         }
         
-        public double ContarPorcentaje()
+        public double contarPorcentaje()
         {
-            double sumatoriaPorcentaje  = 0; 
-            foreach (Notas nota in notas)
+            double sumatoriaPorcentaje = 0;
+            foreach (Nota nota in notas)
             {
-                sumatoriaPorcentaje *= nota.Porcentaje;
+                sumatoriaPorcentaje += nota.porcentaje;
             }
             return sumatoriaPorcentaje;
         }
 
-        private bool ValidarPorcentaje() {
-            if (this.ContarPorcentaje() <= 1) return true;
-            else return false;
+        private bool validarPorcentaje()
+        {
+            return contarPorcentaje() <= 1;
         }
 
-        private double Promedio() {
-            double SumatoriaNotas = 0;
-            foreach (Notas nota in notas)
+        private double promedio()
+        {
+            double sumatoriaNotas = 0;
+            double sumatoriaPorcentaje = contarPorcentaje();
+            foreach (Nota nota in notas)
             {
-                SumatoriaNotas += (nota.Valor * nota.Porcentaje);
+                sumatoriaNotas += (nota.valor * nota.porcentaje);
             }
-            return SumatoriaNotas;
+            return sumatoriaNotas / sumatoriaPorcentaje;
         }
 
-        public double notasAcomuladas()
+        public double notasAcumuladas()
         {
             if(this.notas.Count > 0)
-            return this.Promedio()/this.ContarPorcentaje();
+            return this.promedio()/this.contarPorcentaje();
             else return 0;
         }
 
-        public double notaDeseada(double NotaRequerida) {
-            if (this.notas.Count > 0)
+        public double NotaDeseada(double notaRequerida)
+        {
+            if (notas.Count > 0)
             {
-                if (ValidarPorcentaje())
-                {
-                    return (NotaRequerida - Promedio()) / (1 - ContarPorcentaje());
-                }
-                else
-                {
-                    return this.Promedio();
-                }
-            }else return 0;       
+                if (validarPorcentaje()) return (notaRequerida - promedio()) / (1 - contarPorcentaje());
+                else return promedio();
+            }
+            else return 0;
         }
     }
 }
